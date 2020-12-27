@@ -1,1 +1,1 @@
-Image Hoster 
+Image Uploader Website
