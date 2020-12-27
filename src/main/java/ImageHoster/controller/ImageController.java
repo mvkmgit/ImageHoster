@@ -1,8 +1,10 @@
 package ImageHoster.controller;
 
+import ImageHoster.model.Comment;
 import ImageHoster.model.Image;
 import ImageHoster.model.Tag;
 import ImageHoster.model.User;
+import ImageHoster.service.CommentService;
 import ImageHoster.service.ImageService;
 import ImageHoster.service.TagService;
 import ImageHoster.service.UserService;
@@ -32,6 +34,10 @@ public class ImageController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CommentService commentService;
+    private Integer imageId;
+
 
     //This method displays all the images in the user home page after successful login
     @RequestMapping("images")
@@ -56,6 +62,8 @@ public class ImageController {
         Image image = imageService.getImageByTitle(title,ImageId);
         model.addAttribute("image", image);
         model.addAttribute("tags", image.getTags());
+        List<Comment> comments = commentService.getAllComments(imageId); // Added all comments
+        model.addAttribute("comments", comments);  // list to model
         return "images/image";
     }
 
@@ -109,8 +117,11 @@ public class ImageController {
         }
         List<Tag> tags = image.getTags();
         model.addAttribute("tags", tags);
+        List<Comment> comments = commentService.getAllComments(imageId); // Added all comments
+        model.addAttribute("comments", comments);  // Added  list to model
         String error = "Only the owner of the image can edit/delete the image";
         model.addAttribute("editError", error);
+
         return "images/image";
     }
 
@@ -167,6 +178,8 @@ public class ImageController {
         //Added tags
         List<Tag> tags = image.getTags();
         model.addAttribute("tags", tags);
+        List<Comment> comments = commentService.getAllComments(imageId); // Added all comments
+        model.addAttribute("comments", comments);  // Added list to model
         return "images/image";
     }
 
