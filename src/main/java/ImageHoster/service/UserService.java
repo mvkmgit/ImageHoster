@@ -5,6 +5,8 @@ import ImageHoster.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
+
 @Service
 public class UserService {
 
@@ -30,6 +32,16 @@ public class UserService {
         } else {
             return null;
         }
+    }
+
+    // method to check given user is same userlogged or different to edit, delete functionalities.
+    public Boolean isUserLoggedInUser(User user, HttpSession session){
+        //Gets logged in user id from the user in session
+        Integer loggedInUserId = ((User) session.getAttribute("loggeduser")).getId();
+        if(user.getId()==loggedInUserId){
+            return true;
+        }
+        return false;
     }
 
 }
